@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artwork — Nuno Azevedo</title>
+    <meta
+      name="description"
+      content="Artwork by Nuno Azevedo — selected works and exhibitions."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="nav">
+      <nav class="nav__inner" aria-label="Main navigation">
+        <div class="nav__group nav__group--left">
+          <a class="nav__link is-active" href="artwork.html" data-section="artwork">Artwork</a>
+        </div>
+        <a class="nav__name" href="index.html#hero" data-section="hero">Nuno Azevedo</a>
+        <div class="nav__group nav__group--right">
+          <a class="nav__link" href="about.html" data-section="about">About</a>
+          <a class="nav__link" href="contact.html" data-section="contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+    
+      <section class="artwork-gallery container" aria-label="Artwork gallery">
+        <button class="gallery__arrow gallery__arrow--prev" type="button" aria-label="Previous artwork">
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div class="gallery__dots-wrapper">
+          <div class="gallery__viewport">
+            <div class="gallery__track" id="galleryTrack">
+              <figure class="gallery__slide is-active gallery__slide--loading">
+                <p class="gallery__loading-msg">Loading artworks…</p>
+              </figure>
+            </div>
+          </div>
+          <div class="gallery__dots" id="galleryDots" aria-label="Gallery pagination"></div>
+        </div>
+
+        <button class="gallery__arrow gallery__arrow--next" type="button" aria-label="Next artwork">
+          <span aria-hidden="true">→</span>
+        </button>
+      </section>
+    </main>
+
+    <aside class="inquiry-panel" aria-hidden="true">
+      <div class="inquiry-panel__header">
+        <p>Artwork inquiry</p>
+        <button class="inquiry-panel__close" type="button" aria-label="Close inquiry form">×</button>
+      </div>
+
+      <h2 class="inquiry-panel__title">Inquire about Quiet Geometry</h2>
+      <p class="inquiry-panel__subtitle">Tell us about your interest and we’ll respond with availability and details.</p>
+
+      <form class="inquiry-form" id="artworkInquiryForm">
+        <input type="hidden" name="artwork" id="inquiryArtwork" value="Quiet Geometry" />
+
+        <label class="field">
+          <span>Name</span>
+          <input type="text" name="name" placeholder="Your name" required />
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="you@example.com" required />
+        </label>
+
+        <label class="field">
+          <span>Phone</span>
+          <input type="tel" name="phone" placeholder="+1 (555) 123-4567" />
+        </label>
+
+        <label class="field">
+          <span>Message</span>
+          <textarea name="message" rows="5" placeholder="Tell us about your interest in this work." required></textarea>
+        </label>
+
+        <button type="submit" class="inquiry-form__submit">Send inquiry</button>
+      </form>
+
+      <p class="inquiry-form__success" aria-live="polite"></p>
+    </aside>
+
+    <script>
+      const CSV_URL =
+        'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVkOxl2kO2jkTnkxXJcq1urGGjg2lzkvskXmDK39wyYZYavpwNsTu8aNPAmpmbZpgqQrBdxDD-GVqP/pub?output=csv';
+
+      const track = document.getElementById('galleryTrack');
+      const viewport = document.querySelector('.gallery__viewport');
+      const dotsContainer = document.getElementById('galleryDots');
+      const prevButton = document.querySelector('.gallery__arrow--prev');
+      const nextButton = document.querySelector('.gallery__arrow--next');
+      const inquiryPanel = document.querySelector('.inquiry-panel');
+      const inquiryTitle = document.querySelector('.inquiry-panel__title');
+      const inquiryArtworkInput = document.getElementById('inquiryArtwork');
+      const closePanelButton = document.querySelector('.inquiry-panel__close');
+      const inquiryForm = document.getElementById('artworkInquiryForm');
+      const inquirySuccess = document.querySelector('.inquiry-form__success');
+
+      let slides = [];
+      let dots = [];
+      let currentIndex = 0;
+      let dragState = null;
+
+      // Minimal CSV parser that handles quoted fields.
+      function parseCSV(text) {
+        const lines = text.trim().split(/\r?\n/);
+        const headers = splitCSVRow(lines[0]).map((h) => h.trim().toLowerCase());
+        return lines.slice(1).map((line) => {
+          const values = splitCSVRow(line);
+          return Object.fromEntries(headers.map((h, i) => [h, (values[i] ?? '').trim()]));
+        });
+      }
+
+      function splitCSVRow(row) {
+        const result = [];
+        let field = '';
+        let inQuotes = false;
+        for (let i = 0; i < row.length; i++) {
+          const ch = row[i];
+          if (ch === '"') {
+            if (inQuotes && row[i + 1] === '"') { field += '"'; i++; }
+            else inQuotes = !inQuotes;
+          } else if (ch === ',' && !inQuotes) {
+            result.push(field); field = '';
+          } else {
+            field += ch;
+          }
+        }
+        result.push(field);
+        return result;
+      }
+
+      function buildGallery(artworks) {
+        track.innerHTML = '';
+        dotsContainer.innerHTML = '';
+        slides = [];
+        dots = [];
+
+        artworks.forEach((artwork, index) => {
+          const title = artwork.title || artwork.name || '';
+          const date = artwork.date || artwork.year || '';
+          const material = artwork.material || '';
+          const size = artwork.size || '';
+          const imageUrl = artwork.image || artwork.image_url || artwork.img || '';
+          const alt = artwork.alt || title;
+
+          const figure = document.createElement('figure');
+          figure.className = 'gallery__slide' + (index === 0 ? ' is-active' : '');
+
+          const img = document.createElement('img');
+          img.src = imageUrl;
+          img.alt = alt;
+
+          const figcaption = document.createElement('figcaption');
+          const strong = document.createElement('strong');
+          strong.textContent = title;
+          const em = document.createElement('em');
+          em.textContent = date;
+          const details = document.createElement('div');
+          details.className = 'gallery__details';
+
+          if (material) {
+            const materialItem = document.createElement('div');
+            materialItem.className = 'gallery__detail';
+            const materialLabel = document.createElement('span');
+            materialLabel.className = 'gallery__detail-label';
+            materialLabel.textContent = 'Material';
+            const materialValue = document.createElement('span');
+            materialValue.className = 'gallery__detail-value';
+            materialValue.textContent = material;
+            materialItem.append(materialLabel, materialValue);
+            details.appendChild(materialItem);
+          }
+
+          if (size) {
+            const sizeItem = document.createElement('div');
+            sizeItem.className = 'gallery__detail';
+            const sizeLabel = document.createElement('span');
+            sizeLabel.className = 'gallery__detail-label';
+            sizeLabel.textContent = 'Size';
+            const sizeValue = document.createElement('span');
+            sizeValue.className = 'gallery__detail-value';
+            sizeValue.textContent = size;
+            sizeItem.append(sizeLabel, sizeValue);
+            details.appendChild(sizeItem);
+          }
+
+          const inquireBtn = document.createElement('button');
+          inquireBtn.className = 'gallery__inquire';
+          inquireBtn.type = 'button';
+          inquireBtn.dataset.artwork = title;
+          inquireBtn.textContent = 'Inquire';
+          inquireBtn.addEventListener('click', () => openInquiry(title));
+          const content = document.createElement('div');
+          content.className = 'gallery__content';
+          content.append(strong, em);
+
+          const metadata = document.createElement('div');
+          metadata.className = 'gallery__metadata';
+          if (details.children.length) metadata.append(details);
+
+          const actions = document.createElement('div');
+          actions.className = 'gallery__actions';
+          actions.append(inquireBtn);
+
+          figcaption.append(content, metadata, actions);
+
+          figure.append(img, figcaption);
+          track.appendChild(figure);
+          slides.push(figure);
+
+          const dot = document.createElement('button');
+          dot.className = 'gallery__dot' + (index === 0 ? ' is-active' : '');
+          dot.type = 'button';
+          dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+          dot.addEventListener('click', () => renderSlide(index));
+          dotsContainer.appendChild(dot);
+          dots.push(dot);
+        });
+
+        currentIndex = 0;
+      }
+
+      function renderSlide(index) {
+        if (!slides.length) return;
+        currentIndex = (index + slides.length) % slides.length;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === currentIndex));
+        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === currentIndex));
+      }
+
+      function setDragTransform(deltaX) {
+        const width = viewport.getBoundingClientRect().width || 1;
+        const percentOffset = (deltaX / width) * 100;
+        track.style.transform = `translateX(calc(-${currentIndex * 100}% + ${percentOffset}%))`;
+      }
+
+      function startDrag(event) {
+        if (slides.length < 2) return;
+        if (event.target.closest('button, a')) return;
+
+        dragState = {
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          deltaX: 0,
+          active: false,
+        };
+
+        viewport.setPointerCapture(event.pointerId);
+      }
+
+      function moveDrag(event) {
+        if (!dragState || dragState.pointerId !== event.pointerId) return;
+
+        const deltaX = event.clientX - dragState.startX;
+        const deltaY = event.clientY - dragState.startY;
+
+        if (!dragState.active) {
+          if (Math.abs(deltaX) < 8 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+          dragState.active = true;
+          viewport.classList.add('is-dragging');
+          track.style.transition = 'none';
+        }
+
+        dragState.deltaX = deltaX;
+        setDragTransform(deltaX);
+      }
+
+      function endDrag(event) {
+        if (!dragState || dragState.pointerId !== event.pointerId) return;
+
+        const { deltaX, active, pointerId } = dragState;
+        dragState = null;
+        viewport.classList.remove('is-dragging');
+        track.style.transition = '';
+
+        if (viewport.hasPointerCapture(pointerId)) {
+          viewport.releasePointerCapture(pointerId);
+        }
+
+        if (!active) {
+          renderSlide(currentIndex);
+          return;
+        }
+
+        const threshold = Math.max(50, viewport.getBoundingClientRect().width * 0.18);
+        if (Math.abs(deltaX) > threshold) {
+          renderSlide(currentIndex + (deltaX < 0 ? 1 : -1));
+        } else {
+          renderSlide(currentIndex);
+        }
+      }
+
+      function openInquiry(artwork) {
+        inquiryTitle.textContent = ` ${artwork}`;
+        inquiryArtworkInput.value = artwork;
+        inquiryPanel.classList.add('is-open');
+        inquiryPanel.setAttribute('aria-hidden', 'false');
+        inquirySuccess.textContent = '';
+      }
+
+      function closeInquiry() {
+        inquiryPanel.classList.remove('is-open');
+        inquiryPanel.setAttribute('aria-hidden', 'true');
+      }
+
+      function buildInquiryMailto() {
+        const formData = new FormData(inquiryForm);
+        const artwork = inquiryArtworkInput.value.trim();
+        const name = (formData.get('name') || '').toString().trim();
+        const email = (formData.get('email') || '').toString().trim();
+        const phone = (formData.get('phone') || '').toString().trim();
+        const message = (formData.get('message') || '').toString().trim();
+
+        const subject = `Artwork inquiry: ${artwork}`;
+        const bodyLines = [
+          `Artwork: ${artwork}`,
+          `Name: ${name}`,
+          `Email: ${email}`,
+        ];
+
+        if (phone) bodyLines.push(`Phone: ${phone}`);
+        bodyLines.push('', 'Message:', message);
+
+        const body = bodyLines.join('\n');
+
+        return `mailto:nuno.filipe.azevedo.22@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }
+
+      async function loadArtworks() {
+        try {
+          const response = await fetch(CSV_URL);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const text = await response.text();
+          const artworks = parseCSV(text).filter((a) => a.title || a.name);
+          if (!artworks.length) throw new Error('No artworks found in sheet');
+          buildGallery(artworks);
+        } catch (err) {
+          track.innerHTML = `<figure class="gallery__slide is-active gallery__slide--error"><p class="gallery__loading-msg">Could not load artworks. Please try again later.</p></figure>`;
+          console.error('Gallery load error:', err);
+        }
+      }
+
+      prevButton.addEventListener('click', () => renderSlide(currentIndex - 1));
+      nextButton.addEventListener('click', () => renderSlide(currentIndex + 1));
+      viewport.addEventListener('pointerdown', startDrag);
+      viewport.addEventListener('pointermove', moveDrag);
+      viewport.addEventListener('pointerup', endDrag);
+      viewport.addEventListener('pointercancel', endDrag);
+      closePanelButton.addEventListener('click', closeInquiry);
+
+      inquiryPanel.addEventListener('click', (event) => {
+        if (event.target === inquiryPanel) closeInquiry();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') renderSlide(currentIndex - 1);
+        if (event.key === 'ArrowRight') renderSlide(currentIndex + 1);
+        if (event.key === 'Escape' && inquiryPanel.classList.contains('is-open')) closeInquiry();
+      });
+
+      inquiryForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const mailtoUrl = buildInquiryMailto();
+        window.location.href = mailtoUrl;
+        inquirySuccess.textContent = `Opening your email app for "${inquiryArtworkInput.value}".`;
+      });
+
+      loadArtworks();
+    </script>
+          <footer class="about-page__footer">
+        <div class="hero__footer-brand">Nuno Azevedo</div>
+        <div class="hero__footer-meta">
+          <span>© Nuno Azevedo - All rights reserved</span>
+          <span class="hero__footer-separator">-</span>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <span class="hero__footer-separator">-</span>
+          <a href="cookie-policy.html">Cookie Policy</a>
+        </div>
+      </footer>
+  </body>
+</html>
