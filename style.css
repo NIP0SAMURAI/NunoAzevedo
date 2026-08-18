@@ -226,7 +226,7 @@ a {
   letter-spacing: 0.03em;
   text-transform: none;
   color: rgba(255, 255, 255, 0.78);
-  padding-right: 3rem;
+  padding-right: 1rem;
 }
 
 .hero__footer-meta a {
@@ -379,7 +379,7 @@ a {
 
 .contact-page__content {
   max-width: 38rem;
-  padding-left: 3rem;
+  padding-left: 1rem;
 }
 
 .contact-page__eyebrow {
@@ -435,7 +435,7 @@ a {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding-left: 3rem;
+  padding-left: 1rem;
   padding-top: 1.5rem;
 }
 
