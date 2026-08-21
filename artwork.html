@@ -86,7 +86,18 @@
       <h2 class="inquiry-panel__title">Inquire about Quiet Geometry</h2>
       <p class="inquiry-panel__subtitle">Tell us about your interest and we’ll respond with availability and details.</p>
 
-      <form class="inquiry-form" id="artworkInquiryForm">
+      <form
+        class="inquiry-form"
+        id="artworkInquiryForm"
+        name="artwork-inquiry"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+      >
+        <input type="hidden" name="form-name" value="artwork-inquiry" />
+        <p hidden>
+          <label>Don't fill this out: <input name="bot-field" /></label>
+        </p>
         <input type="hidden" name="artwork" id="inquiryArtwork" value="Quiet Geometry" />
 
         <label class="field">
@@ -351,27 +362,8 @@
         inquiryPanel.setAttribute('aria-hidden', 'true');
       }
 
-      function buildInquiryMailto() {
-        const formData = new FormData(inquiryForm);
-        const artwork = inquiryArtworkInput.value.trim();
-        const name = (formData.get('name') || '').toString().trim();
-        const email = (formData.get('email') || '').toString().trim();
-        const phone = (formData.get('phone') || '').toString().trim();
-        const message = (formData.get('message') || '').toString().trim();
-
-        const subject = `Artwork inquiry: ${artwork}`;
-        const bodyLines = [
-          `Artwork: ${artwork}`,
-          `Name: ${name}`,
-          `Email: ${email}`,
-        ];
-
-        if (phone) bodyLines.push(`Phone: ${phone}`);
-        bodyLines.push('', 'Message:', message);
-
-        const body = bodyLines.join('\n');
-
-        return `mailto:nuno.filipe.azevedo.22@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      function encodeFormData(formData) {
+        return new URLSearchParams(formData).toString();
       }
 
       async function loadArtworks() {
@@ -406,11 +398,32 @@
         if (event.key === 'Escape' && inquiryPanel.classList.contains('is-open')) closeInquiry();
       });
 
-      inquiryForm.addEventListener('submit', (event) => {
+      inquiryForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        const mailtoUrl = buildInquiryMailto();
-        window.location.href = mailtoUrl;
-        inquirySuccess.textContent = `Opening your email app for "${inquiryArtworkInput.value}".`;
+        const artwork = inquiryArtworkInput.value.trim();
+        const submitButton = inquiryForm.querySelector('.inquiry-form__submit');
+        if (submitButton instanceof HTMLButtonElement) submitButton.disabled = true;
+        inquirySuccess.textContent = 'Sending inquiry...';
+
+        try {
+          const formData = new FormData(inquiryForm);
+          const response = await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encodeFormData(formData),
+          });
+
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+          inquiryForm.reset();
+          inquiryArtworkInput.value = artwork;
+          inquirySuccess.textContent = `Inquiry sent for "${artwork}". We will get back to you soon.`;
+        } catch (error) {
+          inquirySuccess.textContent = 'We could not send your inquiry right now. Please try again.';
+          console.error('Inquiry submit error:', error);
+        } finally {
+          if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+        }
       });
 
       loadArtworks();
