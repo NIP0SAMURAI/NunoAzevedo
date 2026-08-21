@@ -123,7 +123,7 @@
         <button type="submit" class="inquiry-form__submit">Send inquiry</button>
       </form>
 
-      <div class="inquiry-panel__confirmation" aria-live="polite" hidden>
+      <div class="inquiry-panel__confirmation is-hidden" aria-live="polite">
         <p class="inquiry-panel__confirmation-title">Inquiry sent.</p>
         <p class="inquiry-panel__confirmation-body">Thank you — we'll get back to you soon.</p>
       </div>
@@ -358,18 +358,18 @@
         inquiryArtworkInput.value = artwork;
         inquiryPanel.classList.add('is-open');
         inquiryPanel.setAttribute('aria-hidden', 'false');
-        inquiryForm.hidden = false;
-        inquirySubtitle.hidden = false;
-        inquiryConfirmation.hidden = true;
+        inquiryForm.classList.remove('is-hidden');
+        inquirySubtitle.classList.remove('is-hidden');
+        inquiryConfirmation.classList.add('is-hidden');
       }
 
       function closeInquiry() {
         inquiryPanel.classList.remove('is-open');
         inquiryPanel.setAttribute('aria-hidden', 'true');
         inquiryForm.reset();
-        inquiryForm.hidden = false;
-        inquirySubtitle.hidden = false;
-        inquiryConfirmation.hidden = true;
+        inquiryForm.classList.remove('is-hidden');
+        inquirySubtitle.classList.remove('is-hidden');
+        inquiryConfirmation.classList.add('is-hidden');
       }
 
       function encodeFormData(formData) {
@@ -422,11 +422,9 @@
             body: encodeFormData(formData),
           });
 
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-          inquiryForm.hidden = true;
-          inquirySubtitle.hidden = true;
-          inquiryConfirmation.hidden = false;
+          inquiryForm.classList.add('is-hidden');
+          inquirySubtitle.classList.add('is-hidden');
+          inquiryConfirmation.classList.remove('is-hidden');
         } catch (error) {
           if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
           alert('We could not send your inquiry right now. Please try again.');
