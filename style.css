@@ -63,7 +63,7 @@ a {
   height: 100%;
   width: 100%;
   margin: 0 auto;
-  padding: 0 1.2rem;
+  padding: 0 1.8rem;
   gap: clamp(0.5rem, 2vw, 1.5rem);
 }
 
@@ -199,7 +199,7 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.25rem 1.5rem 1.5rem;
+  padding: 1.25rem 1.5rem 1.8rem;
   color: rgba(255, 255, 255, 0.9);
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
 }
@@ -462,13 +462,13 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.25rem 1.5rem 1.5rem 0rem;
+  padding: 1.25rem 1.8rem 1.5rem 0rem;
   background: #111111;
   color: rgba(255, 255, 255, 0.9);
 }
 
 .about-page__footer .hero__footer-brand {
-  padding-left: 1.2rem;
+  padding-left: 1.8rem;
 }
 
 .about-page__footer .hero__footer-meta {
@@ -848,7 +848,7 @@ a {
   border: none;
   background: var(--color-text);
   color: #ffffff;
-  padding: 1rem 1.2rem;
+  padding: 1rem 1.8rem;
   font: inherit;
   font-size: 0.8rem;
   letter-spacing: 0.08em;
