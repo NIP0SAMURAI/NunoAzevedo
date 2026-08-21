@@ -123,7 +123,10 @@
         <button type="submit" class="inquiry-form__submit">Send inquiry</button>
       </form>
 
-      <p class="inquiry-form__success" aria-live="polite"></p>
+      <div class="inquiry-panel__confirmation" aria-live="polite" hidden>
+        <p class="inquiry-panel__confirmation-title">Inquiry sent.</p>
+        <p class="inquiry-panel__confirmation-body">Thank you — we'll get back to you soon.</p>
+      </div>
     </aside>
 
     <script>
@@ -139,7 +142,8 @@
       const inquiryArtworkInput = document.getElementById('inquiryArtwork');
       const closePanelButton = document.querySelector('.inquiry-panel__close');
       const inquiryForm = document.getElementById('artworkInquiryForm');
-      const inquirySuccess = document.querySelector('.inquiry-form__success');
+      const inquiryConfirmation = document.querySelector('.inquiry-panel__confirmation');
+      const inquirySubtitle = document.querySelector('.inquiry-panel__subtitle');
 
       let slides = [];
       let dots = [];
@@ -354,12 +358,18 @@
         inquiryArtworkInput.value = artwork;
         inquiryPanel.classList.add('is-open');
         inquiryPanel.setAttribute('aria-hidden', 'false');
-        inquirySuccess.textContent = '';
+        inquiryForm.hidden = false;
+        inquirySubtitle.hidden = false;
+        inquiryConfirmation.hidden = true;
       }
 
       function closeInquiry() {
         inquiryPanel.classList.remove('is-open');
         inquiryPanel.setAttribute('aria-hidden', 'true');
+        inquiryForm.reset();
+        inquiryForm.hidden = false;
+        inquirySubtitle.hidden = false;
+        inquiryConfirmation.hidden = true;
       }
 
       function encodeFormData(formData) {
@@ -403,7 +413,6 @@
         const artwork = inquiryArtworkInput.value.trim();
         const submitButton = inquiryForm.querySelector('.inquiry-form__submit');
         if (submitButton instanceof HTMLButtonElement) submitButton.disabled = true;
-        inquirySuccess.textContent = 'Sending inquiry...';
 
         try {
           const formData = new FormData(inquiryForm);
@@ -415,14 +424,13 @@
 
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-          inquiryForm.reset();
-          inquiryArtworkInput.value = artwork;
-          inquirySuccess.textContent = `Inquiry sent for "${artwork}". We will get back to you soon.`;
+          inquiryForm.hidden = true;
+          inquirySubtitle.hidden = true;
+          inquiryConfirmation.hidden = false;
         } catch (error) {
-          inquirySuccess.textContent = 'We could not send your inquiry right now. Please try again.';
-          console.error('Inquiry submit error:', error);
-        } finally {
           if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+          alert('We could not send your inquiry right now. Please try again.');
+          console.error('Inquiry submit error:', error);
         }
       });
 

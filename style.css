@@ -849,10 +849,26 @@ a {
   cursor: pointer;
 }
 
-.inquiry-form__success {
-  margin-top: 1rem;
-  color: var(--color-text);
-  min-height: 1.5rem;
+.inquiry-form__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.inquiry-panel__confirmation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+}
+
+.inquiry-panel__confirmation-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 500;
+}
+
+.inquiry-panel__confirmation-body {
+  color: var(--color-muted);
+  font-size: 0.95rem;
 }
 
 @media (max-width: 40rem) {
