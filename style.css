@@ -7,7 +7,7 @@
   --color-border: #e5e5e5;
   --color-navindex: #0d0d0d;
   --nav-height: 3rem;
-  --max-width: 72rem;
+  --max-width: 99rem;
 }
 
 * {
@@ -41,7 +41,7 @@ a {
 .container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2.5rem;
 }
 
 /* Nav */
@@ -64,7 +64,7 @@ a {
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 1.2rem;
   gap: clamp(0.5rem, 2vw, 1.5rem);
 }
 
@@ -210,7 +210,7 @@ a {
   font-size: 1.1rem;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  padding-left: 3rem;
+  padding-left: 0rem;
 }
 
 .hero__footer-meta {
@@ -223,7 +223,8 @@ a {
   letter-spacing: 0.03em;
   text-transform: none;
   color: rgba(255, 255, 255, 0.78);
-  padding-right: 1rem;
+  padding-right: 0rem;
+  padding-top: 0.25rem;
 }
 
 .hero__footer-meta a {
@@ -468,7 +469,7 @@ a {
 }
 
 .about-page__footer .hero__footer-brand {
-  padding-left: 3rem;
+  padding-left: 1.2rem;
 }
 
 .about-page__footer .hero__footer-meta {
@@ -476,7 +477,7 @@ a {
 }
 
 .contact-simple {
-  min-height: calc(98vh - var(--nav-height));
+  min-height: calc(95.4vh - var(--nav-height));
   display: flex;
   justify-content: flex-start;
   padding-top: 6rem;
@@ -698,7 +699,8 @@ a {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0rem 1.25rem 0;
+  padding: 0rem 1.25rem;
+  padding-bottom: 1.5rem;
   z-index: 10;
 }
 

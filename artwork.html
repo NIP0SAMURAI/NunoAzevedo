@@ -27,10 +27,7 @@
       property="og:image"
       content="https://www.nunoazevedo.eu/images/Nuno-about.png"
     />
-    <meta
-      property="og:image:alt"
-      content="Portrait of artist Nuno Azevedo"
-    />
+    <meta property="og:image:alt" content="Portrait of artist Nuno Azevedo" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Artwork — Nuno Azevedo" />
     <meta
@@ -48,18 +45,31 @@
     <header class="nav">
       <nav class="nav__inner" aria-label="Main navigation">
         <div class="nav__group nav__group--left">
-          <a class="nav__link is-active" href="artwork.html" data-section="artwork">Artwork</a>
+          <a
+            class="nav__link is-active"
+            href="artwork.html"
+            data-section="artwork"
+            >Artwork</a
+          >
         </div>
-        <a class="nav__name" href="index.html#hero" data-section="hero">Nuno Azevedo</a>
+        <a class="nav__name" href="index.html#hero" data-section="hero"
+          >Nuno Azevedo</a
+        >
         <div class="nav__group nav__group--right">
           <a class="nav__link" href="about.html" data-section="about">About</a>
-          <a class="nav__link" href="contact.html" data-section="contact">Contact</a>
+          <a class="nav__link" href="contact.html" data-section="contact"
+            >Contact</a
+          >
         </div>
       </nav>
     </header>
     <div class="about-page-body__content">
       <section class="artwork-gallery container" aria-label="Artwork gallery">
-        <button class="gallery__arrow gallery__arrow--prev" type="button" aria-label="Previous artwork">
+        <button
+          class="gallery__arrow gallery__arrow--prev"
+          type="button"
+          aria-label="Previous artwork"
+        >
           <span aria-hidden="true">←</span>
         </button>
 
@@ -71,7 +81,11 @@
           </div>
         </div>
 
-        <button class="gallery__arrow gallery__arrow--next" type="button" aria-label="Next artwork">
+        <button
+          class="gallery__arrow gallery__arrow--next"
+          type="button"
+          aria-label="Next artwork"
+        >
           <span aria-hidden="true">→</span>
         </button>
       </section>
@@ -80,11 +94,20 @@
     <aside class="inquiry-panel" aria-hidden="true">
       <div class="inquiry-panel__header">
         <p>Artwork inquiry</p>
-        <button class="inquiry-panel__close" type="button" aria-label="Close inquiry form">×</button>
+        <button
+          class="inquiry-panel__close"
+          type="button"
+          aria-label="Close inquiry form"
+        >
+          ×
+        </button>
       </div>
 
       <h2 class="inquiry-panel__title">Inquire about Quiet Geometry</h2>
-      <p class="inquiry-panel__subtitle">Tell us about your interest and we’ll respond with availability and details.</p>
+      <p class="inquiry-panel__subtitle">
+        Tell us about your interest and we’ll respond with availability and
+        details.
+      </p>
 
       <form
         class="inquiry-form"
@@ -98,7 +121,12 @@
         <p hidden>
           <label>Don't fill this out: <input name="bot-field" /></label>
         </p>
-        <input type="hidden" name="artwork" id="inquiryArtwork" value="Quiet Geometry" />
+        <input
+          type="hidden"
+          name="artwork"
+          id="inquiryArtwork"
+          value="Quiet Geometry"
+        />
 
         <label class="field">
           <span>Name</span>
@@ -107,7 +135,12 @@
 
         <label class="field">
           <span>Email</span>
-          <input type="email" name="email" placeholder="you@example.com" required />
+          <input
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+          />
         </label>
 
         <label class="field">
@@ -117,7 +150,12 @@
 
         <label class="field">
           <span>Message</span>
-          <textarea name="message" rows="5" placeholder="Tell us about your interest in this work." required></textarea>
+          <textarea
+            name="message"
+            rows="5"
+            placeholder="Tell us about your interest in this work."
+            required
+          ></textarea>
         </label>
 
         <button type="submit" class="inquiry-form__submit">Send inquiry</button>
@@ -125,25 +163,31 @@
 
       <div class="inquiry-panel__confirmation is-hidden" aria-live="polite">
         <p class="inquiry-panel__confirmation-title">Inquiry sent.</p>
-        <p class="inquiry-panel__confirmation-body">Thank you — we'll get back to you soon.</p>
+        <p class="inquiry-panel__confirmation-body">
+          Thank you — we'll get back to you soon.
+        </p>
       </div>
     </aside>
 
     <script>
       const CSV_URL =
-        'https://docs.google.com/spreadsheets/d/e/2PACX-1vQVkOxl2kO2jkTnkxXJcq1urGGjg2lzkvskXmDK39wyYZYavpwNsTu8aNPAmpmbZpgqQrBdxDD-GVqP/pub?output=csv';
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vQVkOxl2kO2jkTnkxXJcq1urGGjg2lzkvskXmDK39wyYZYavpwNsTu8aNPAmpmbZpgqQrBdxDD-GVqP/pub?output=csv";
 
-      const track = document.getElementById('galleryTrack');
-      const viewport = document.querySelector('.gallery__viewport');
-      const prevButton = document.querySelector('.gallery__arrow--prev');
-      const nextButton = document.querySelector('.gallery__arrow--next');
-      const inquiryPanel = document.querySelector('.inquiry-panel');
-      const inquiryTitle = document.querySelector('.inquiry-panel__title');
-      const inquiryArtworkInput = document.getElementById('inquiryArtwork');
-      const closePanelButton = document.querySelector('.inquiry-panel__close');
-      const inquiryForm = document.getElementById('artworkInquiryForm');
-      const inquiryConfirmation = document.querySelector('.inquiry-panel__confirmation');
-      const inquirySubtitle = document.querySelector('.inquiry-panel__subtitle');
+      const track = document.getElementById("galleryTrack");
+      const viewport = document.querySelector(".gallery__viewport");
+      const prevButton = document.querySelector(".gallery__arrow--prev");
+      const nextButton = document.querySelector(".gallery__arrow--next");
+      const inquiryPanel = document.querySelector(".inquiry-panel");
+      const inquiryTitle = document.querySelector(".inquiry-panel__title");
+      const inquiryArtworkInput = document.getElementById("inquiryArtwork");
+      const closePanelButton = document.querySelector(".inquiry-panel__close");
+      const inquiryForm = document.getElementById("artworkInquiryForm");
+      const inquiryConfirmation = document.querySelector(
+        ".inquiry-panel__confirmation",
+      );
+      const inquirySubtitle = document.querySelector(
+        ".inquiry-panel__subtitle",
+      );
 
       let slides = [];
       let dots = [];
@@ -154,24 +198,31 @@
       // Minimal CSV parser that handles quoted fields.
       function parseCSV(text) {
         const lines = text.trim().split(/\r?\n/);
-        const headers = splitCSVRow(lines[0]).map((h) => h.trim().toLowerCase());
+        const headers = splitCSVRow(lines[0]).map((h) =>
+          h.trim().toLowerCase(),
+        );
         return lines.slice(1).map((line) => {
           const values = splitCSVRow(line);
-          return Object.fromEntries(headers.map((h, i) => [h, (values[i] ?? '').trim()]));
+          return Object.fromEntries(
+            headers.map((h, i) => [h, (values[i] ?? "").trim()]),
+          );
         });
       }
 
       function splitCSVRow(row) {
         const result = [];
-        let field = '';
+        let field = "";
         let inQuotes = false;
         for (let i = 0; i < row.length; i++) {
           const ch = row[i];
           if (ch === '"') {
-            if (inQuotes && row[i + 1] === '"') { field += '"'; i++; }
-            else inQuotes = !inQuotes;
-          } else if (ch === ',' && !inQuotes) {
-            result.push(field); field = '';
+            if (inQuotes && row[i + 1] === '"') {
+              field += '"';
+              i++;
+            } else inQuotes = !inQuotes;
+          } else if (ch === "," && !inQuotes) {
+            result.push(field);
+            field = "";
           } else {
             field += ch;
           }
@@ -181,88 +232,90 @@
       }
 
       function buildGallery(artworks) {
-        track.innerHTML = '';
+        track.innerHTML = "";
         slides = [];
         dots = [];
-        dotsContainer = document.createElement('div');
-        dotsContainer.className = 'gallery__dots';
-        dotsContainer.setAttribute('aria-label', 'Gallery pagination');
-        dotsContainer.innerHTML = '';
+        dotsContainer = document.createElement("div");
+        dotsContainer.className = "gallery__dots";
+        dotsContainer.setAttribute("aria-label", "Gallery pagination");
+        dotsContainer.innerHTML = "";
 
         artworks.forEach((artwork, index) => {
-          const title = artwork.title || artwork.name || '';
-          const date = artwork.date || artwork.year || '';
-          const material = artwork.material || '';
-          const size = artwork.size || '';
-          const imageUrl = artwork.image || artwork.image_url || artwork.img || '';
+          const title = artwork.title || artwork.name || "";
+          const date = artwork.date || artwork.year || "";
+          const material = artwork.material || "";
+          const size = artwork.size || "";
+          const imageUrl =
+            artwork.image || artwork.image_url || artwork.img || "";
           const alt = artwork.alt || title;
 
-          const figure = document.createElement('figure');
-          figure.className = 'gallery__slide' + (index === 0 ? ' is-active' : '');
+          const figure = document.createElement("figure");
+          figure.className =
+            "gallery__slide" + (index === 0 ? " is-active" : "");
 
-          const img = document.createElement('img');
+          const img = document.createElement("img");
           img.src = imageUrl;
           img.alt = alt;
 
-          const figcaption = document.createElement('figcaption');
-          const strong = document.createElement('strong');
+          const figcaption = document.createElement("figcaption");
+          const strong = document.createElement("strong");
           strong.textContent = title;
-          const em = document.createElement('em');
+          const em = document.createElement("em");
           em.textContent = date;
-          const details = document.createElement('div');
-          details.className = 'gallery__details';
+          const details = document.createElement("div");
+          details.className = "gallery__details";
 
           if (material) {
-            const materialItem = document.createElement('div');
-            materialItem.className = 'gallery__detail';
-            const materialLabel = document.createElement('span');
-            materialLabel.className = 'gallery__detail-label';
-            materialLabel.textContent = 'Material';
-            const materialValue = document.createElement('span');
-            materialValue.className = 'gallery__detail-value';
+            const materialItem = document.createElement("div");
+            materialItem.className = "gallery__detail";
+            const materialLabel = document.createElement("span");
+            materialLabel.className = "gallery__detail-label";
+            materialLabel.textContent = "Material";
+            const materialValue = document.createElement("span");
+            materialValue.className = "gallery__detail-value";
             materialValue.textContent = material;
             materialItem.append(materialLabel, materialValue);
             details.appendChild(materialItem);
           }
 
           if (size) {
-            const sizeItem = document.createElement('div');
-            sizeItem.className = 'gallery__detail';
-            const sizeLabel = document.createElement('span');
-            sizeLabel.className = 'gallery__detail-label';
-            sizeLabel.textContent = 'Size';
-            const sizeValue = document.createElement('span');
-            sizeValue.className = 'gallery__detail-value';
+            const sizeItem = document.createElement("div");
+            sizeItem.className = "gallery__detail";
+            const sizeLabel = document.createElement("span");
+            sizeLabel.className = "gallery__detail-label";
+            sizeLabel.textContent = "Size";
+            const sizeValue = document.createElement("span");
+            sizeValue.className = "gallery__detail-value";
             sizeValue.textContent = size;
             sizeItem.append(sizeLabel, sizeValue);
             details.appendChild(sizeItem);
           }
 
-          const inquireBtn = document.createElement('button');
-          inquireBtn.className = 'gallery__inquire';
-          inquireBtn.type = 'button';
+          const inquireBtn = document.createElement("button");
+          inquireBtn.className = "gallery__inquire";
+          inquireBtn.type = "button";
           inquireBtn.dataset.artwork = title;
-          inquireBtn.textContent = 'Inquire';
-          inquireBtn.addEventListener('click', () => openInquiry(title));
-          const content = document.createElement('div');
-          content.className = 'gallery__content';
+          inquireBtn.textContent = "Inquire";
+          inquireBtn.addEventListener("click", () => openInquiry(title));
+          const content = document.createElement("div");
+          content.className = "gallery__content";
           content.append(strong, em);
 
-          const metadata = document.createElement('div');
-          metadata.className = 'gallery__metadata';
+          const metadata = document.createElement("div");
+          metadata.className = "gallery__metadata";
           if (details.children.length) metadata.append(details);
 
-          const actions = document.createElement('div');
-          actions.className = 'gallery__actions';
+          const actions = document.createElement("div");
+          actions.className = "gallery__actions";
           actions.append(inquireBtn);
 
           figcaption.append(content, metadata, actions);
 
-          const dot = document.createElement('button');
-          dot.className = 'gallery__dot' + (index === 0 ? ' is-active' : '');
-          dot.type = 'button';
-          dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-          dot.addEventListener('click', () => renderSlide(index));
+          const dot = document.createElement("button");
+          dot.className = "gallery__dot" + (index === 0 ? " is-active" : "");
+          dot.type = "button";
+          dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+          dot.addEventListener("click", () => renderSlide(index));
           dotsContainer.appendChild(dot);
           dots.push(dot);
 
@@ -281,8 +334,12 @@
         if (!slides.length) return;
         currentIndex = (index + slides.length) % slides.length;
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
-        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === currentIndex));
-        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === currentIndex));
+        slides.forEach((slide, i) =>
+          slide.classList.toggle("is-active", i === currentIndex),
+        );
+        dots.forEach((dot, i) =>
+          dot.classList.toggle("is-active", i === currentIndex),
+        );
 
         const activeSlide = slides[currentIndex];
         if (activeSlide && !activeSlide.contains(dotsContainer)) {
@@ -298,7 +355,7 @@
 
       function startDrag(event) {
         if (slides.length < 2) return;
-        if (event.target.closest('button, a')) return;
+        if (event.target.closest("button, a")) return;
 
         dragState = {
           pointerId: event.pointerId,
@@ -318,10 +375,11 @@
         const deltaY = event.clientY - dragState.startY;
 
         if (!dragState.active) {
-          if (Math.abs(deltaX) < 8 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+          if (Math.abs(deltaX) < 8 || Math.abs(deltaX) < Math.abs(deltaY))
+            return;
           dragState.active = true;
-          viewport.classList.add('is-dragging');
-          track.style.transition = 'none';
+          viewport.classList.add("is-dragging");
+          track.style.transition = "none";
         }
 
         dragState.deltaX = deltaX;
@@ -333,8 +391,8 @@
 
         const { deltaX, active, pointerId } = dragState;
         dragState = null;
-        viewport.classList.remove('is-dragging');
-        track.style.transition = '';
+        viewport.classList.remove("is-dragging");
+        track.style.transition = "";
 
         if (viewport.hasPointerCapture(pointerId)) {
           viewport.releasePointerCapture(pointerId);
@@ -345,7 +403,10 @@
           return;
         }
 
-        const threshold = Math.max(50, viewport.getBoundingClientRect().width * 0.18);
+        const threshold = Math.max(
+          50,
+          viewport.getBoundingClientRect().width * 0.18,
+        );
         if (Math.abs(deltaX) > threshold) {
           renderSlide(currentIndex + (deltaX < 0 ? 1 : -1));
         } else {
@@ -356,20 +417,20 @@
       function openInquiry(artwork) {
         inquiryTitle.textContent = ` ${artwork}`;
         inquiryArtworkInput.value = artwork;
-        inquiryPanel.classList.add('is-open');
-        inquiryPanel.setAttribute('aria-hidden', 'false');
-        inquiryForm.classList.remove('is-hidden');
-        inquirySubtitle.classList.remove('is-hidden');
-        inquiryConfirmation.classList.add('is-hidden');
+        inquiryPanel.classList.add("is-open");
+        inquiryPanel.setAttribute("aria-hidden", "false");
+        inquiryForm.classList.remove("is-hidden");
+        inquirySubtitle.classList.remove("is-hidden");
+        inquiryConfirmation.classList.add("is-hidden");
       }
 
       function closeInquiry() {
-        inquiryPanel.classList.remove('is-open');
-        inquiryPanel.setAttribute('aria-hidden', 'true');
+        inquiryPanel.classList.remove("is-open");
+        inquiryPanel.setAttribute("aria-hidden", "true");
         inquiryForm.reset();
-        inquiryForm.classList.remove('is-hidden');
-        inquirySubtitle.classList.remove('is-hidden');
-        inquiryConfirmation.classList.add('is-hidden');
+        inquiryForm.classList.remove("is-hidden");
+        inquirySubtitle.classList.remove("is-hidden");
+        inquiryConfirmation.classList.add("is-hidden");
       }
 
       function encodeFormData(formData) {
@@ -382,67 +443,72 @@
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const text = await response.text();
           const artworks = parseCSV(text).filter((a) => a.title || a.name);
-          if (!artworks.length) throw new Error('No artworks found in sheet');
+          if (!artworks.length) throw new Error("No artworks found in sheet");
           buildGallery(artworks);
         } catch (err) {
           track.innerHTML = `<figure class="gallery__slide is-active gallery__slide--error"><p class="gallery__loading-msg">Could not load artworks. Please try again later.</p></figure>`;
-          console.error('Gallery load error:', err);
+          console.error("Gallery load error:", err);
         }
       }
 
-      prevButton.addEventListener('click', () => renderSlide(currentIndex - 1));
-      nextButton.addEventListener('click', () => renderSlide(currentIndex + 1));
-      viewport.addEventListener('pointerdown', startDrag);
-      viewport.addEventListener('pointermove', moveDrag);
-      viewport.addEventListener('pointerup', endDrag);
-      viewport.addEventListener('pointercancel', endDrag);
-      closePanelButton.addEventListener('click', closeInquiry);
+      prevButton.addEventListener("click", () => renderSlide(currentIndex - 1));
+      nextButton.addEventListener("click", () => renderSlide(currentIndex + 1));
+      viewport.addEventListener("pointerdown", startDrag);
+      viewport.addEventListener("pointermove", moveDrag);
+      viewport.addEventListener("pointerup", endDrag);
+      viewport.addEventListener("pointercancel", endDrag);
+      closePanelButton.addEventListener("click", closeInquiry);
 
-      inquiryPanel.addEventListener('click', (event) => {
+      inquiryPanel.addEventListener("click", (event) => {
         if (event.target === inquiryPanel) closeInquiry();
       });
 
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowLeft') renderSlide(currentIndex - 1);
-        if (event.key === 'ArrowRight') renderSlide(currentIndex + 1);
-        if (event.key === 'Escape' && inquiryPanel.classList.contains('is-open')) closeInquiry();
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") renderSlide(currentIndex - 1);
+        if (event.key === "ArrowRight") renderSlide(currentIndex + 1);
+        if (
+          event.key === "Escape" &&
+          inquiryPanel.classList.contains("is-open")
+        )
+          closeInquiry();
       });
 
-      inquiryForm.addEventListener('submit', async (event) => {
+      inquiryForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const artwork = inquiryArtworkInput.value.trim();
-        const submitButton = inquiryForm.querySelector('.inquiry-form__submit');
-        if (submitButton instanceof HTMLButtonElement) submitButton.disabled = true;
+        const submitButton = inquiryForm.querySelector(".inquiry-form__submit");
+        if (submitButton instanceof HTMLButtonElement)
+          submitButton.disabled = true;
 
         try {
           const formData = new FormData(inquiryForm);
-          const response = await fetch('/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          const response = await fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encodeFormData(formData),
           });
 
-          inquiryForm.classList.add('is-hidden');
-          inquirySubtitle.classList.add('is-hidden');
-          inquiryConfirmation.classList.remove('is-hidden');
+          inquiryForm.classList.add("is-hidden");
+          inquirySubtitle.classList.add("is-hidden");
+          inquiryConfirmation.classList.remove("is-hidden");
         } catch (error) {
-          if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
-          alert('We could not send your inquiry right now. Please try again.');
-          console.error('Inquiry submit error:', error);
+          if (submitButton instanceof HTMLButtonElement)
+            submitButton.disabled = false;
+          alert("We could not send your inquiry right now. Please try again.");
+          console.error("Inquiry submit error:", error);
         }
       });
 
       loadArtworks();
     </script>
-          <footer class="about-page__footer">
-        <div class="hero__footer-brand">Nuno Azevedo</div>
-        <div class="hero__footer-meta">
-          <span>© Nuno Azevedo - All rights reserved</span>
-          <span class="hero__footer-separator">-</span>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <span class="hero__footer-separator">-</span>
-          <a href="cookie-policy.html">Cookie Policy</a>
-        </div>
-      </footer>
+    <footer class="about-page__footer">
+      <div class="hero__footer-brand">Nuno Azevedo</div>
+      <div class="hero__footer-meta">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <span class="hero__footer-separator">-</span>
+        <a href="cookie-policy.html">Cookie Policy</a>
+        <span>© Nuno Azevedo - All rights reserved</span>
+      </div>
+    </footer>
   </body>
 </html>
