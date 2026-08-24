@@ -65,6 +65,11 @@
     </header>
     <div class="about-page-body__content">
       <section class="artwork-gallery container" aria-label="Artwork gallery">
+        <div
+          class="artwork-sections"
+          id="gallerySectionFilters"
+          aria-label="Artwork sections"
+        ></div>
         <button
           class="gallery__arrow gallery__arrow--prev"
           type="button"
@@ -174,6 +179,7 @@
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vQVkOxl2kO2jkTnkxXJcq1urGGjg2lzkvskXmDK39wyYZYavpwNsTu8aNPAmpmbZpgqQrBdxDD-GVqP/pub?output=csv";
 
       const track = document.getElementById("galleryTrack");
+      const gallerySection = document.querySelector(".artwork-gallery");
       const viewport = document.querySelector(".gallery__viewport");
       const prevButton = document.querySelector(".gallery__arrow--prev");
       const nextButton = document.querySelector(".gallery__arrow--next");
@@ -188,7 +194,13 @@
       const inquirySubtitle = document.querySelector(
         ".inquiry-panel__subtitle",
       );
+      const gallerySectionFilters = document.getElementById(
+        "gallerySectionFilters",
+      );
 
+      let allArtworks = [];
+      let currentSection = "all";
+      let sections = [];
       let slides = [];
       let dots = [];
       let dotsContainer = null;
@@ -231,10 +243,37 @@
         return result;
       }
 
+      function normalizeSection(value) {
+        return (value || "").trim().toLowerCase();
+      }
+
+      function getArtworkSection(artwork) {
+        return (artwork.sections || artwork.section || "").trim();
+      }
+
+      function setArrowState() {
+        const isDisabled = slides.length <= 1;
+        gallerySection.classList.toggle("is-single", isDisabled);
+        prevButton.disabled = isDisabled;
+        nextButton.disabled = isDisabled;
+        prevButton.hidden = isDisabled;
+        nextButton.hidden = isDisabled;
+        if (dotsContainer) dotsContainer.hidden = isDisabled;
+      }
+
       function buildGallery(artworks) {
         track.innerHTML = "";
         slides = [];
         dots = [];
+        setArrowState();
+
+        if (!artworks.length) {
+          dotsContainer = null;
+          track.innerHTML = `<figure class="gallery__slide is-active gallery__slide--error"><p class="gallery__loading-msg">No artworks available for this section.</p></figure>`;
+          setArrowState();
+          return;
+        }
+
         dotsContainer = document.createElement("div");
         dotsContainer.className = "gallery__dots";
         dotsContainer.setAttribute("aria-label", "Gallery pagination");
@@ -328,6 +367,7 @@
         if (slides.length) {
           slides[0].appendChild(dotsContainer);
         }
+        setArrowState();
       }
 
       function renderSlide(index) {
@@ -437,6 +477,45 @@
         return new URLSearchParams(formData).toString();
       }
 
+      function setSection(sectionValue) {
+        currentSection = sectionValue;
+        const filteredArtworks =
+          sectionValue === "all"
+            ? allArtworks
+            : allArtworks.filter(
+                (artwork) =>
+                  normalizeSection(getArtworkSection(artwork)) === sectionValue,
+              );
+        buildGallery(filteredArtworks);
+        renderSlide(0);
+
+        const options = gallerySectionFilters.querySelectorAll(
+          ".artwork-sections__option",
+        );
+        options.forEach((option) =>
+          option.classList.toggle(
+            "is-active",
+            option.dataset.section === sectionValue,
+          ),
+        );
+      }
+
+      function buildSectionFilters() {
+        gallerySectionFilters.innerHTML = "";
+
+        sections.forEach((section) => {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className =
+            "artwork-sections__option" +
+            (section.value === currentSection ? " is-active" : "");
+          option.dataset.section = section.value;
+          option.textContent = section.label;
+          option.addEventListener("click", () => setSection(section.value));
+          gallerySectionFilters.appendChild(option);
+        });
+      }
+
       async function loadArtworks() {
         try {
           const response = await fetch(CSV_URL);
@@ -444,7 +523,21 @@
           const text = await response.text();
           const artworks = parseCSV(text).filter((a) => a.title || a.name);
           if (!artworks.length) throw new Error("No artworks found in sheet");
-          buildGallery(artworks);
+          allArtworks = artworks;
+
+          const uniqueSections = [];
+          const seenSections = new Set();
+          artworks.forEach((artwork) => {
+            const sectionLabel = getArtworkSection(artwork);
+            const sectionValue = normalizeSection(sectionLabel);
+            if (!sectionValue || seenSections.has(sectionValue)) return;
+            seenSections.add(sectionValue);
+            uniqueSections.push({ value: sectionValue, label: sectionLabel });
+          });
+
+          sections = [{ value: "all", label: "All" }, ...uniqueSections];
+          buildSectionFilters();
+          setSection("all");
         } catch (err) {
           track.innerHTML = `<figure class="gallery__slide is-active gallery__slide--error"><p class="gallery__loading-msg">Could not load artworks. Please try again later.</p></figure>`;
           console.error("Gallery load error:", err);
