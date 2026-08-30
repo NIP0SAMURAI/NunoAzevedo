@@ -85,7 +85,7 @@
             </figure>
           </div>
         </div>
-        <div class="gallery__dots-wrapper">
+        <div class="gallery__dots-wrapper" id="dotsWrapper">
           <div
             class="gallery__dots"
             id="galleryDots"
@@ -205,6 +205,7 @@
         "gallerySectionFilters",
       );
       const dotsContainer = document.getElementById("galleryDots");
+      const dotsWrapper = document.getElementById("dotsWrapper");
 
       let allArtworks = [];
       let currentSection = "all";
@@ -358,13 +359,15 @@
 
           figcaption.append(content, metadata, actions);
 
-          const dot = document.createElement("button");
-          dot.className = "gallery__dot" + (index === 0 ? " is-active" : "");
-          dot.type = "button";
-          dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
-          dot.addEventListener("click", () => renderSlide(index));
-          if (dotsContainer) dotsContainer.appendChild(dot);
-          dots.push(dot);
+          if (currentSection !== "all") {
+            const dot = document.createElement("button");
+            dot.className = "gallery__dot" + (index === 0 ? " is-active" : "");
+            dot.type = "button";
+            dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+            dot.addEventListener("click", () => renderSlide(index));
+            if (dotsContainer) dotsContainer.appendChild(dot);
+            dots.push(dot);
+          }
 
           figure.append(img, figcaption);
           track.appendChild(figure);
@@ -495,16 +498,19 @@
               );
         buildGallery(filteredArtworks);
         renderSlide(0);
+       if (dotsWrapper) {
+         dotsWrapper.style.display = sectionValue === "all" ? "none" : "flex";
+       }
 
-        const options = gallerySectionFilters.querySelectorAll(
-          ".artwork-sections__option",
-        );
-        options.forEach((option) =>
-          option.classList.toggle(
-            "is-active",
-            option.dataset.section === sectionValue,
-          ),
-        );
+       const options = gallerySectionFilters.querySelectorAll(
+         ".artwork-sections__option",
+       );
+       options.forEach((option) =>
+         option.classList.toggle(
+           "is-active",
+           option.dataset.section === sectionValue,
+         ),
+       );
       }
 
       function buildSectionFilters() {
