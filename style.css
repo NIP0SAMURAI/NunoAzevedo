@@ -1017,6 +1017,10 @@ a {
     display: none;
   }
 
+  .gallery__viewport {
+    grid-column: 1 / -1;
+  }
+
   .gallery__slide {
     height: auto;
   }

@@ -260,11 +260,17 @@
 
       function setArrowState() {
         const isDisabled = slides.length <= 1;
+        const isAtStart = currentIndex <= 0;
+        const isAtEnd = currentIndex >= slides.length - 1;
+        const hidePrev = isDisabled || isAtStart;
+        const hideNext = isDisabled || isAtEnd;
         gallerySection.classList.toggle("is-single", isDisabled);
-        prevButton.disabled = isDisabled;
-        nextButton.disabled = isDisabled;
-        prevButton.hidden = isDisabled;
-        nextButton.hidden = isDisabled;
+        prevButton.disabled = hidePrev;
+        nextButton.disabled = hideNext;
+        prevButton.style.visibility = hidePrev ? "hidden" : "visible";
+        nextButton.style.visibility = hideNext ? "hidden" : "visible";
+        prevButton.setAttribute("aria-hidden", hidePrev ? "true" : "false");
+        nextButton.setAttribute("aria-hidden", hideNext ? "true" : "false");
         if (dotsContainer) dotsContainer.hidden = isDisabled;
       }
 
@@ -374,7 +380,7 @@
 
       function renderSlide(index) {
         if (!slides.length) return;
-        currentIndex = (index + slides.length) % slides.length;
+        currentIndex = Math.min(Math.max(index, 0), slides.length - 1);
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
         slides.forEach((slide, i) =>
           slide.classList.toggle("is-active", i === currentIndex),
@@ -385,6 +391,7 @@
         if (dotsContainer) {
           dotsContainer.style.setProperty("--active-index", String(currentIndex));
         }
+        setArrowState();
       }
 
       function setDragTransform(deltaX) {
