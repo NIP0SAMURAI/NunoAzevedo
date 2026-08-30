@@ -85,6 +85,13 @@
             </figure>
           </div>
         </div>
+        <div class="gallery__dots-wrapper">
+          <div
+            class="gallery__dots"
+            id="galleryDots"
+            aria-label="Gallery pagination"
+          ></div>
+        </div>
 
         <button
           class="gallery__arrow gallery__arrow--next"
@@ -197,13 +204,13 @@
       const gallerySectionFilters = document.getElementById(
         "gallerySectionFilters",
       );
+      const dotsContainer = document.getElementById("galleryDots");
 
       let allArtworks = [];
       let currentSection = "all";
       let sections = [];
       let slides = [];
       let dots = [];
-      let dotsContainer = null;
       let currentIndex = 0;
       let dragState = null;
 
@@ -265,19 +272,14 @@
         track.innerHTML = "";
         slides = [];
         dots = [];
+        if (dotsContainer) dotsContainer.innerHTML = "";
         setArrowState();
 
         if (!artworks.length) {
-          dotsContainer = null;
           track.innerHTML = `<figure class="gallery__slide is-active gallery__slide--error"><p class="gallery__loading-msg">No artworks available for this section.</p></figure>`;
           setArrowState();
           return;
         }
-
-        dotsContainer = document.createElement("div");
-        dotsContainer.className = "gallery__dots";
-        dotsContainer.setAttribute("aria-label", "Gallery pagination");
-        dotsContainer.innerHTML = "";
 
         artworks.forEach((artwork, index) => {
           const title = artwork.title || artwork.name || "";
@@ -355,17 +357,17 @@
           dot.type = "button";
           dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
           dot.addEventListener("click", () => renderSlide(index));
-          dotsContainer.appendChild(dot);
+          if (dotsContainer) dotsContainer.appendChild(dot);
           dots.push(dot);
 
-          figure.append(img, figcaption, dotsContainer);
+          figure.append(img, figcaption);
           track.appendChild(figure);
           slides.push(figure);
         });
 
         currentIndex = 0;
-        if (slides.length) {
-          slides[0].appendChild(dotsContainer);
+        if (dotsContainer) {
+          dotsContainer.style.setProperty("--active-index", String(currentIndex));
         }
         setArrowState();
       }
@@ -380,10 +382,8 @@
         dots.forEach((dot, i) =>
           dot.classList.toggle("is-active", i === currentIndex),
         );
-
-        const activeSlide = slides[currentIndex];
-        if (activeSlide && !activeSlide.contains(dotsContainer)) {
-          activeSlide.appendChild(dotsContainer);
+        if (dotsContainer) {
+          dotsContainer.style.setProperty("--active-index", String(currentIndex));
         }
       }
 

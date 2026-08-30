@@ -555,6 +555,7 @@ a {
 
 .artwork-sections {
   grid-column: 1 / -1;
+  grid-row: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -593,6 +594,8 @@ a {
 }
 
 .gallery__viewport {
+  grid-column: 2;
+  grid-row: 2;
   overflow: hidden;
   touch-action: pan-y;
   padding-top: 0.2rem;
@@ -727,6 +730,16 @@ a {
     background 0.2s ease;
 }
 
+.gallery__arrow--prev {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.gallery__arrow--next {
+  grid-column: 3;
+  grid-row: 2;
+}
+
 .gallery__arrow:hover {
   border-color: var(--color-text);
   background: #ffffff;
@@ -738,25 +751,55 @@ a {
 }
 
 .artwork-gallery.is-single .gallery__arrow,
-.artwork-gallery.is-single .gallery__dots {
+.artwork-gallery.is-single .gallery__dots-wrapper {
   display: none !important;
 }
 
+.gallery__dots-wrapper {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 1.5rem;
+}
+
 .gallery__dots {
+  --dot-size: 10px;
+  --dot-gap: 0.5rem;
+  --dot-side-padding: 1.25rem;
+  --active-index: 0;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0rem 1.25rem;
-  padding-bottom: 1.5rem;
+  gap: var(--dot-gap);
+  padding: 0rem var(--dot-side-padding);
   z-index: 10;
+}
+
+.gallery__dots::before {
+  content: "";
+  position: absolute;
+  left: var(--dot-side-padding);
+  top: 50%;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  background: var(--color-text);
+  border: 1px solid var(--color-text);
+  transform: translate(
+    calc(var(--active-index) * (var(--dot-size) + var(--dot-gap))),
+    -50%
+  );
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
 }
 
 .gallery__dot {
   appearance: none;
   -webkit-appearance: none;
-  width: 10px;
-  height: 10px;
+  width: var(--dot-size);
+  height: var(--dot-size);
   padding: 0;
   border: 1px solid var(--color-text);
   border-radius: 0;
@@ -770,8 +813,13 @@ a {
 }
 
 .gallery__dot.is-active {
-  background: var(--color-text);
   border-color: var(--color-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery__dots::before {
+    transition: none;
+  }
 }
 
 .gallery__inquire {
