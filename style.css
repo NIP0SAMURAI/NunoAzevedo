@@ -436,13 +436,14 @@ a {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding-left: 1rem;
   padding-top: 1.5rem;
 }
 
 .contact-page__image-wrap img {
   width: 100%;
   height: min(70vh, 42rem);
+  padding-left: 2rem;
+  padding-right: 2rem;
   object-fit: cover;
   object-position: center;
   display: block;
