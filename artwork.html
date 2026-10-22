@@ -213,6 +213,7 @@
       let slides = [];
       let dots = [];
       let currentIndex = 0;
+      let hasRenderedSlide = false;
       let dragState = null;
 
       // Minimal CSV parser that handles quoted fields.
@@ -279,6 +280,7 @@
         track.innerHTML = "";
         slides = [];
         dots = [];
+        hasRenderedSlide = false;
         if (dotsContainer) dotsContainer.innerHTML = "";
         setArrowState();
 
@@ -383,11 +385,20 @@
 
       function renderSlide(index) {
         if (!slides.length) return;
-        currentIndex = Math.min(Math.max(index, 0), slides.length - 1);
+        const nextIndex = Math.min(Math.max(index, 0), slides.length - 1);
+        const shouldAnimate = !hasRenderedSlide || nextIndex !== currentIndex;
+        currentIndex = nextIndex;
         track.style.transform = `translateX(-${currentIndex * 100}%)`;
         slides.forEach((slide, i) =>
           slide.classList.toggle("is-active", i === currentIndex),
         );
+        if (shouldAnimate) {
+          slides.forEach((slide) => slide.classList.remove("is-entering"));
+          const activeSlide = slides[currentIndex];
+          void activeSlide.offsetWidth;
+          activeSlide.classList.add("is-entering");
+        }
+        hasRenderedSlide = true;
         dots.forEach((dot, i) =>
           dot.classList.toggle("is-active", i === currentIndex),
         );

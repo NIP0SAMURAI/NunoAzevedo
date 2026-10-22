@@ -634,6 +634,10 @@ a {
   filter: saturate(0.9);
 }
 
+.gallery__slide.is-entering img {
+  animation: gallery-image-in 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 .gallery__slide figcaption {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -643,6 +647,35 @@ a {
   justify-items: center;
   margin: 0;
   padding: 1.5rem 1.25rem;
+}
+
+.gallery__slide.is-entering figcaption {
+  animation: gallery-caption-in 1200ms ease both;
+  animation-delay: 320ms;
+}
+
+@keyframes gallery-image-in {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gallery-caption-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .gallery__content {
@@ -819,6 +852,15 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .gallery__track {
+    transition: none;
+  }
+
+  .gallery__slide.is-entering img,
+  .gallery__slide.is-entering figcaption {
+    animation: none;
+  }
+
   .gallery__dots::before {
     transition: none;
   }
