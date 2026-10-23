@@ -25,7 +25,7 @@
     <meta property="og:site_name" content="Nuno Azevedo" />
     <meta
       property="og:image"
-      content="https://www.nunoazevedo.eu/images/Nuno-about.png"
+      content="https://www.nunoazevedo.eu/images/Nuno-about.jpg"
     />
     <meta property="og:image:alt" content="Portrait of artist Nuno Azevedo" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -36,7 +36,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://www.nunoazevedo.eu/images/Nuno-about.png"
+      content="https://www.nunoazevedo.eu/images/Nuno-about.jpg"
     />
     <link rel="canonical" href="https://www.nunoazevedo.eu/artwork.html" />
     <link rel="stylesheet" href="style.css" />
@@ -378,7 +378,10 @@
 
         currentIndex = 0;
         if (dotsContainer) {
-          dotsContainer.style.setProperty("--active-index", String(currentIndex));
+          dotsContainer.style.setProperty(
+            "--active-index",
+            String(currentIndex),
+          );
         }
         setArrowState();
       }
@@ -403,7 +406,10 @@
           dot.classList.toggle("is-active", i === currentIndex),
         );
         if (dotsContainer) {
-          dotsContainer.style.setProperty("--active-index", String(currentIndex));
+          dotsContainer.style.setProperty(
+            "--active-index",
+            String(currentIndex),
+          );
         }
         setArrowState();
       }
@@ -509,19 +515,19 @@
               );
         buildGallery(filteredArtworks);
         renderSlide(0);
-       if (dotsWrapper) {
-         dotsWrapper.style.display = sectionValue === "all" ? "none" : "flex";
-       }
+        if (dotsWrapper) {
+          dotsWrapper.style.display = sectionValue === "all" ? "none" : "flex";
+        }
 
-       const options = gallerySectionFilters.querySelectorAll(
-         ".artwork-sections__option",
-       );
-       options.forEach((option) =>
-         option.classList.toggle(
-           "is-active",
-           option.dataset.section === sectionValue,
-         ),
-       );
+        const options = gallerySectionFilters.querySelectorAll(
+          ".artwork-sections__option",
+        );
+        options.forEach((option) =>
+          option.classList.toggle(
+            "is-active",
+            option.dataset.section === sectionValue,
+          ),
+        );
       }
 
       function buildSectionFilters() {
