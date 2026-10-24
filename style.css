@@ -607,6 +607,11 @@ a {
   cursor: grabbing;
 }
 
+.gallery__viewport.is-dragging .gallery__slide figcaption,
+.gallery__viewport.is-settling .gallery__slide figcaption {
+  visibility: hidden;
+}
+
 .gallery__track {
   display: flex;
   width: 100%;
