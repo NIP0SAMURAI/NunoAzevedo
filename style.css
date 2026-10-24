@@ -643,6 +643,10 @@ a {
   animation: gallery-image-in 1100ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+.gallery__slide.is-drag-entering img {
+  animation: none;
+}
+
 .gallery__slide figcaption {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

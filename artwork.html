@@ -386,7 +386,7 @@
         setArrowState();
       }
 
-      function renderSlide(index) {
+      function renderSlide(index, { animateImage = true } = {}) {
         if (!slides.length) return;
         const nextIndex = Math.min(Math.max(index, 0), slides.length - 1);
         const shouldAnimate = !hasRenderedSlide || nextIndex !== currentIndex;
@@ -397,9 +397,13 @@
         );
         if (shouldAnimate) {
           slides.forEach((slide) => slide.classList.remove("is-entering"));
+          slides.forEach((slide) =>
+            slide.classList.remove("is-drag-entering"),
+          );
           const activeSlide = slides[currentIndex];
           void activeSlide.offsetWidth;
           activeSlide.classList.add("is-entering");
+          if (!animateImage) activeSlide.classList.add("is-drag-entering");
         }
         hasRenderedSlide = true;
         dots.forEach((dot, i) =>
@@ -476,7 +480,9 @@
           viewport.getBoundingClientRect().width * 0.18,
         );
         if (Math.abs(deltaX) > threshold) {
-          renderSlide(currentIndex + (deltaX < 0 ? 1 : -1));
+          renderSlide(currentIndex + (deltaX < 0 ? 1 : -1), {
+            animateImage: false,
+          });
         } else {
           renderSlide(currentIndex);
         }
